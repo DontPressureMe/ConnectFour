@@ -1,0 +1,281 @@
+import java.util.Scanner;
+
+
+
+
+public class ConnectFour {
+    public static void main(String[] args) {
+        Scanner answer = new Scanner(System.in);
+        // Create and initialize the game board
+        String [][] gameBoard = new String [6][7];
+        for(int r = 0; r < gameBoard.length; r++)
+        {
+            for (int c = 0; c < gameBoard[r].length; c++)
+            {
+                gameBoard[r][c] = " ";
+            }
+        }
+
+
+
+
+
+
+        // Print the initial game board
+        printGameboard(gameBoard);
+
+
+
+
+
+
+        // Set player's turn and initialize variables
+        int turn = 1;
+        int col = 0;
+        boolean playerWon = false;
+
+
+
+
+
+
+
+
+
+
+
+
+        // Game loop
+        while(!playerWon)
+        {
+            // Get the column where the player wants to drop the disk
+            if (turn ==1)
+            {
+                System.out.println("Player 1, drop your red disk at colum (0-6)");
+                col = answer.nextInt();
+                for(int row = gameBoard.length -1; row >= 0; row--)
+                {
+                    if (gameBoard[row][col].equals(" "))
+                    {
+                        gameBoard[row][col] = "R";
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                System.out.println(" Player 2, drop your yellow disk at column (0-6)");
+                col = answer.nextInt();
+                for(int row = gameBoard.length -1; row >= 0; row--)
+                {
+                    if (gameBoard[row][col].equals(" "))
+                    {
+                        gameBoard[row][col] = "Y";
+                        break;
+                    }
+                }
+            }
+
+
+            // Display the updated game board
+            printGameboard(gameBoard);
+
+
+
+
+
+
+
+
+            // Check if anyone has won or if it's a draw
+            if(checkWinner(gameBoard).equals("Y"))
+            {
+                System.out.println("Player 2 Won!");
+                playerWon = true;
+            }
+
+
+            else if (checkWinner(gameBoard).equals("R"))
+            {
+                System.out.println("Player 1 Won!");
+            }
+
+
+            else if (checkWinner(gameBoard).equals("FULL"))
+            {
+                System.out.println("The gameboard is full. It is a tie!");
+            }
+
+
+
+
+
+
+
+
+
+        // Switch player's turn
+        if (turn == 1)
+        {
+            turn = 2;
+        } else {
+            turn = 1;
+        }
+
+
+
+    }}
+    // Method to print the game board
+    public static void printGameboard(String[][] game)
+    {
+        for (String[] row: game)
+        {
+            for(String x: row)
+            {
+                System.out.print(x + " | ");
+            }
+            System.out.println("");
+
+
+        }
+        System.out.println("-----------------");
+    }
+
+
+
+
+    // Method to check for a winner or a draw
+    public static String checkWinner(String[][] game)
+    {
+
+
+        // Check horizontal wins
+
+        for (int row = 0; row < game.length; row++)
+        {
+            for (int col = 0; col <= game[row].length - 4; col++)
+            {
+                if (game[row][col].equals("R") &&
+                        game[row][col+1].equals("R") &&
+                            game[row][col+2].equals("R") &&
+                                game[row][col+3].equals("R"))
+                {
+                    return "R";
+                }
+                if (game[row][col].equals("Y") &&
+                        game[row][col+1].equals("Y") &&
+                            game[row][col+2].equals("Y") &&
+                                game[row][col+3].equals("Y"))
+                {
+                    return "Y";
+                }
+            }
+        }
+
+
+        // Check vertical wins
+        for (int col = 0; col < game[0].length; col++)
+        {
+            for (int row = 0; row <= game.length - 4; row++)
+            {
+
+                if (game[row][col].equals("R") &&
+                        game[row+1][col].equals("R") &&
+                            game[row+2][col].equals("R") &&
+                                game[row+3][col].equals("R"))
+                {
+                    return "R";
+                }
+                if (game[row][col].equals("Y") &&
+                        game[row+1][col].equals("Y") &&
+                            game[row+2][col].equals("Y") &&
+                                game[row+3][col].equals("Y"))
+                {
+                    return "Y";
+                }
+
+
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+        // Check major diagonal wins
+        for (int row = 0; row <= game.length - 4; row++)
+        {
+            for (int col = 0; col <= game[row].length - 4; col++)
+            {
+                if (game[row][col].equals("R") &&
+                        game[row+1][col+1].equals("R") &&
+                            game[row+2][col+2].equals("R") &&
+                                    game[row+3][col+3].equals("R"))
+                {
+                    return "R";
+                }
+                if (game[row][col].equals("Y") &&
+                            game[row+1][col+1].equals("Y") &&
+                                game[row+2][col+2].equals("Y") &&
+                                    game[row+3][col+3].equals("Y"))
+                {
+                    return "Y";
+                }
+            }
+        }
+
+
+        // Check minor diagonal wins
+        for (int row = 0; row <= game.length - 4; row++)
+        {
+            for (int col = 3; col < game[row].length; col++)
+            {
+
+
+                if (game[row][col].equals("R") &&
+                        game[row+1][col-1].equals("R") &&
+                            game[row+2][col-2].equals("R") &&
+                                game[row+3][col-3].equals("R"))
+                {
+                    return "R";
+                }
+                if (game[row][col].equals("Y") &&
+                        game[row+1][col-1].equals("Y") &&
+                            game[row+2][col-2].equals("Y") &&
+                                game[row+3][col-3].equals("Y"))
+                {
+                    return "Y";
+                }
+
+
+            }
+        }
+
+
+        // Check if the board is full
+        for (int row = 0; row < game.length; row++)
+        {
+            for (int col = 0; col < game[row].length; col++)
+            {
+                if (game[row][col].equals(" "))
+                {
+                    return "GO";
+                }
+            }
+        }
+
+
+        // No winner found, return "FULL" to indicate a draw
+        return "FULL";
+    }
+}
+
+
+
+
+
